@@ -159,14 +159,13 @@ my $ua = LWP::UserAgent->new(
 
 # Get base root.
 print 'Page: '.$base_uri->as_string."\n";
-#my $xml_file = get_file($base_uri);
+my $xml_file = get_file($base_uri);
 my $h = Dicom::Handler->new(
 	'dt' => $dt,
 );
 my $p = XML::SAX::Expat->new('Handler' => $h);
-#$p->parse_file($xml_file);
-$p->parse_file('part06.xml');
-#unlink $xml_file;
+$p->parse_file($xml_file);
+unlink $xml_file;
 
 # Get file
 sub get_file {
