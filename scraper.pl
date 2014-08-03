@@ -73,24 +73,24 @@ sub end_element {
 		}
 		my ($tag, $name, $keyword, $vr, $vm, $retired)
 			= @{$self->{'td'}};
-		my ($group_num, $element_num) = $tag
+		my ($group_number, $element_number) = $tag
 			=~ m/^\(([\d\w]+),([\d\w]+)\)$/ms;
 		$name =~ s/\x{200b}//gms;
 		$keyword =~ s/\x{200b}//gms;
 		my $ret_ar = eval {
 			$self->{'dt'}->execute('SELECT COUNT(*) FROM data '.
 				'WHERE Group_number = ? AND Element_number = ?',
-				$group_num, $element_num);
+				$group_number, $element_number);
 		};
 		if ($EVAL_ERROR || ! @{$ret_ar}
 			|| ! exists $ret_ar->[0]->{'count(*)'}
 			|| ! defined $ret_ar->[0]->{'count(*)'}
 			|| $ret_ar->[0]->{'count(*)'} == 0) {
 
-			print "($group_num,$element_num): $keyword\n";
+			print "($group_number,$element_number): $keyword\n";
 			$self->{'dt'}->insert({
-				'Group_number' => $group_num,
-				'Element_number' => $element_num,
+				'Group_number' => $group_number,
+				'Element_number' => $element_number,
 				'Name' => $name,
 				'Keyword' => $keyword,
 				'VR' => $vr,
